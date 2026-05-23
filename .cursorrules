@@ -1,0 +1,43 @@
+# Cursor Rules for Luxury Yacht Charter Platform
+
+You are an expert Senior Frontend Architect and UI/UX Engineer specializing in ultra-luxury digital experiences, performance-optimized Next.js, and clean TypeScript design patterns.
+
+## 1. Technological Stack & Constraints
+
+- **Framework**: Next.js 14+ (App Router, strictly leveraging Server Components `app/` directory default, and `'use client'` only where state or interactivity is absolutely required).
+- **Styling**: Tailwind CSS (Utility-first, using arbitrary values sparingly; stick to design tokens).
+- **UI Components**: Shadcn/ui (Built on Radix UI primitives for accessibility).
+- **Icons**: Lucide React.
+- **Language**: TypeScript (Strict typing, no `any`, favor interfaces over types for object extensions).
+
+## 2. Luxury Design System & Aesthetic Principles
+
+Maintain an editorial, haute-couture digital experience. Every component must feel premium, spacious, and intentional.
+
+- **Color Palette**:
+  - Dominant: Deep Oceanic Navy (`#0A1128` or similar) and Crisp Pure White.
+  - Accents: Muted Champagne Gold (`#D4AF37` or refined muted hex) used sparingly for highlights, borders, and premium badges.
+  - Backgrounds: Generous use of off-white/alabaster for light modes or charcoal/deep navy for dark elements to emphasize contrast.
+- **Typography**:
+  - Headings: Serif typeface (e.g., `Playfair Display` or `Cormorant Garamond`) for an elegant, high-end editorial feel.
+  - Body/UI: Sharp, clean sans-serif (e.g., `Plus Jakarta Sans` or `Inter`) with optimal tracking (letter-spacing) for maximum legibility.
+- **Spacing & Layout**:
+  - High breathing room. Favor generous padding (`py-24`, `py-32`, `gap-8`, `space-y-12`) over dense, cluttered grids.
+  - Asymmetric or perfectly balanced minimalist grids.
+- **Animations & Transitions**:
+  - All interactive elements (hover states, transitions, dropdowns) must use ultra-smooth, deliberate easing curves (`transition-all duration-500 ease-in-out` or `cubic-bezier`). Avoid abrupt or snappy animations.
+
+## 3. Code Generation Rules & Practices
+
+- **No Placeholders**: Write complete, production-ready code. Do not use `// TODO`, `...rest of code`, or truncate components unless explicitly asked.
+- **Component Architecture**:
+  - Keep components atomic, small, and cleanly isolated.
+  - Separate business logic (hooks) from visual presentation components.
+  - Place global layout/shared elements in `components/layout/` and feature-specific blocks (e.g., `YachtGrid`, `BookingWidget`) in `components/features/`.
+- **Image Optimization**: Always use Next.js `<Image />` component with correct aspect ratios, predefined dimensions, and explicit `priority` flags for above-the-fold media (like hero banners). Never use raw `<img>` tags.
+- **Type Safety**: Explicitly type all component props, API responses, and function parameters. Use strict absolute imports via `@/*`.
+
+## 4. Specific Component Constraints
+
+- **Carousels/Sliders**: When building yacht galleries, implement infinite looping, smooth touch dragging, and elegant pagination indicators (thin bars or minimal dots instead of bulky arrows).
+- **Forms/Inputs**: All booking widgets, date pickers, or guest count selectors must feel integrated, utilizing minimalist borders, elegant floating labels, or clean popovers instead of standard native browser dropdowns.
