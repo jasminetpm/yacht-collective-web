@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -34,18 +35,21 @@ const TEAM = [
     name: "Élise Fontaine",
     role: "Founder & CEO",
     bio: "A former competitive sailor with 20 years in superyacht management across the Mediterranean and Caribbean.",
+    image: "/images/about/team/elise.jpg",
     gradient: "from-ocean-800 to-ocean-600",
   },
   {
     name: "James Hartley",
     role: "Head of Fleet",
     bio: "Ex-Lloyd's surveyor with deep expertise in vessel certification, refit oversight, and crew vetting.",
+    image: "/images/about/team/james.jpg",
     gradient: "from-charcoal-700 to-ocean-800",
   },
   {
     name: "Priya Menon",
     role: "Chief Charter Concierge",
     bio: "Previously with Belmond and Six Senses, Priya brings a hospitality philosophy that elevates every charter.",
+    image: "/images/about/team/priya.jpg",
     gradient: "from-ocean-700 to-charcoal-700",
   },
 ];
@@ -79,13 +83,21 @@ export default function AboutPage() {
         <div className="mx-auto max-w-content-xl px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24 items-start">
             <div className="lg:sticky lg:top-28">
-              <div className="h-96 w-full bg-gradient-to-br from-ocean-800 to-ocean-600 flex items-end p-8">
-                <div>
+              <div className="relative h-96 w-full overflow-hidden bg-gradient-to-br from-ocean-800 to-ocean-600">
+                <Image
+                  src="/images/about/story.jpg"
+                  alt="Yacht Collective — our story"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-8">
                   <p className="text-xs font-sans tracking-[0.2em] uppercase text-champagne-400">
-                    Monaco
+                    Singapore
                   </p>
                   <p className="mt-1 font-serif text-3xl text-white">
-                    Est. 2009
+                    Est. 2022
                   </p>
                 </div>
               </div>
@@ -180,9 +192,15 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {TEAM.map((member) => (
               <div key={member.name} className="group">
-                <div
-                  className={`h-72 w-full bg-gradient-to-b ${member.gradient} mb-5`}
-                />
+                <div className={`relative h-72 w-full overflow-hidden bg-gradient-to-b ${member.gradient} mb-5`}>
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
+                </div>
                 <p className="font-serif text-xl text-ocean-700">
                   {member.name}
                 </p>
