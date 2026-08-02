@@ -21,6 +21,14 @@ export const metadata: Metadata = {
   },
   description:
     "Bespoke yacht charter experiences in the world's most exclusive destinations. Curated by Yacht Collective.",
+  icons: {
+    icon: [
+      { url: "/icons/favicon.ico" },
+      { url: "/icons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/icons/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
