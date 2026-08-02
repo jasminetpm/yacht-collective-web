@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import ContactForm from "@/components/features/ContactForm";
 
@@ -12,25 +13,25 @@ const CONTACT_DETAILS = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@yachtcollective.com",
-    href: "mailto:hello@yachtcollective.com",
+    value: "hello@yachtcollective.sg",
+    href: "mailto:hello@yachtcollective.sg",
   },
   {
     icon: Phone,
-    label: "Telephone",
-    value: "+1 (212) 555 0190",
-    href: "tel:+12125550190",
+    label: "WhatsApp",
+    value: "+65 9050 9001",
+    href: "https://wa.me/6590509001",
   },
   {
     icon: MapPin,
     label: "Address",
-    value: "One Harbour View, Monaco MC 98000",
-    href: null,
+    value: "Sentosa Cove, 1 Cove Dr, Singapore 098497",
+    href: "https://maps.google.com/?q=1+Cove+Dr,+Singapore+098497",
   },
   {
     icon: Clock,
     label: "Hours",
-    value: "Mon – Fri, 09:00 – 18:00 CET",
+    value: "Mon – Sun, 09:00 – 20:00 SGT",
     href: null,
   },
 ];
@@ -106,12 +107,25 @@ export default function ContactPage() {
 
               <div className="border-t border-alabaster-dark pt-8 space-y-3">
                 <p className="text-xs font-sans tracking-[0.1em] uppercase text-charcoal-400">
-                  Also in
+                  Reach Us On
                 </p>
-                <div className="space-y-1.5 text-sm text-charcoal-500">
-                  <p>London · United Kingdom</p>
-                  <p>Singapore · Republic of Singapore</p>
-                  <p>New York · United States</p>
+                <div className="space-y-2 text-sm text-charcoal-500">
+                  <a
+                    href="https://wa.me/6590509001"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-ocean-700 transition-colors duration-300"
+                  >
+                    <span>💬</span> WhatsApp us at +65 9050 9001
+                  </a>
+                  <a
+                    href="https://www.instagram.com/yachtcollective.sg/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-ocean-700 transition-colors duration-300"
+                  >
+                    <span>📸</span> @yachtcollective.sg on Instagram
+                  </a>
                 </div>
               </div>
             </aside>
@@ -127,12 +141,13 @@ export default function ContactPage() {
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-charcoal-500 max-w-md">
                   The more detail you share, the better we can match you with the
-                  right vessel and destination. All information is kept strictly
-                  confidential.
+                  right vessel and experience.
                 </p>
               </div>
 
-              <ContactForm />
+              <Suspense fallback={null}>
+                <ContactForm />
+              </Suspense>
             </div>
           </div>
         </div>

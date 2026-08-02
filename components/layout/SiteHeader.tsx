@@ -42,8 +42,8 @@ export default function SiteHeader() {
         <Link
           href="/"
           className={cn(
-            "font-serif text-xl tracking-wide transition-colors duration-300",
-            scrolled ? "text-ocean-700" : "text-white"
+            "font-serif text-3xl tracking-wide transition-colors duration-300",
+            scrolled ? "text-champagne-600" : "text-champagne-400"
           )}
         >
           Yacht Collective

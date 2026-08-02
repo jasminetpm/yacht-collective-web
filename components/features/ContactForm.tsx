@@ -1,62 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useForm, ValidationError } from "@formspree/react";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface FormState {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  destination: string;
-  dates: string;
-  guests: string;
-  message: string;
-}
-
-const INITIAL: FormState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  destination: "",
-  dates: "",
-  guests: "",
-  message: "",
-};
-
-const DESTINATIONS = [
-  "Mediterranean",
-  "Caribbean",
-  "South East Asia",
-  "Indian Ocean",
-  "Northern Europe",
-  "Other / Unsure",
-];
+const TIME_OPTIONS = ["Morning", "Afternoon", "Evening"];
 
 export default function ContactForm() {
-  const [form, setForm] = useState<FormState>(INITIAL);
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const selectedYacht = searchParams.get("yacht") ?? "";
 
-  function handleChange(
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
+  const [state, handleSubmit] = useForm("mjgnqzol");
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setLoading(false);
-    setSubmitted(true);
-  }
-
-  if (submitted) {
+  if (state.succeeded) {
     return (
       <div className="flex flex-col items-start gap-4 py-10">
         <CheckCircle size={32} className="text-champagne-500" />
@@ -73,119 +30,145 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+
+      {/* Yacht banner — shown only when arriving from a yacht card */}
+      {selectedYacht && (
+        <div className="flex items-center gap-3 border border-champagne-200 bg-champagne-50 px-5 py-4">
+          <div className="h-8 w-0.5 bg-champagne-400 shrink-0" />
+          <div>
+            <p className="text-[0.65rem] font-sans tracking-[0.14em] uppercase text-champagne-600">
+              Enquiring about
+            </p>
+            <p className="mt-0.5 font-serif text-lg text-ocean-700">{selectedYacht}</p>
+          </div>
+          {/* Hidden field so the yacht name is included in the Formspree submission */}
+          <input type="hidden" name="yacht" value={selectedYacht} />
+        </div>
+      )}
+
+      {/* Name row */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field label="First Name" required>
           <input
             type="text"
             name="firstName"
-            value={form.firstName}
-            onChange={handleChange}
             required
             className={inputCls}
             placeholder="Élise"
           />
+          <ValidationError field="firstName" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
         <Field label="Last Name" required>
           <input
             type="text"
             name="lastName"
-            value={form.lastName}
-            onChange={handleChange}
             required
             className={inputCls}
             placeholder="Fontaine"
           />
+          <ValidationError field="lastName" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
       </div>
 
+      {/* Contact row */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field label="Email Address" required>
           <input
             type="email"
             name="email"
-            value={form.email}
-            onChange={handleChange}
             required
             className={inputCls}
             placeholder="elise@example.com"
           />
+          <ValidationError field="email" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
-        <Field label="Phone (optional)">
+        <Field label="Phone" required>
           <input
             type="tel"
             name="phone"
-            value={form.phone}
-            onChange={handleChange}
+            required
             className={inputCls}
-            placeholder="+1 212 555 0190"
+            placeholder="+65 9123 4567"
           />
+          <ValidationError field="phone" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
       </div>
 
+      {/* Date + Time row */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field label="Preferred Destination">
+        <Field label="Date" required>
+          <input
+            type="date"
+            name="date"
+            required
+            className={cn(inputCls, "cursor-pointer")}
+          />
+          <ValidationError field="date" errors={state.errors} className="mt-1 text-xs text-red-500" />
+        </Field>
+        <Field label="Time of Charter" required>
           <select
-            name="destination"
-            value={form.destination}
-            onChange={handleChange}
+            name="timeOfCharter"
+            required
+            defaultValue=""
             className={cn(inputCls, "appearance-none cursor-pointer")}
           >
-            <option value="">Select a region…</option>
-            {DESTINATIONS.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
+            <option value="" disabled>Select a time…</option>
+            {TIME_OPTIONS.map((t) => (
+              <option key={t} value={t}>{t}</option>
             ))}
           </select>
+          <ValidationError field="timeOfCharter" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
-        <Field label="Approximate Dates">
+      </div>
+
+      {/* Guests + Budget row */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <Field label="Number of Guests" required>
+          <input
+            type="number"
+            name="guests"
+            required
+            min={1}
+            max={100}
+            className={inputCls}
+            placeholder="8"
+          />
+          <ValidationError field="guests" errors={state.errors} className="mt-1 text-xs text-red-500" />
+        </Field>
+        <Field label="Budget (optional)">
           <input
             type="text"
-            name="dates"
-            value={form.dates}
-            onChange={handleChange}
+            name="budget"
             className={inputCls}
-            placeholder="e.g. August 2026, 2 weeks"
+            placeholder="e.g. SGD 3,000 – 5,000"
           />
         </Field>
       </div>
 
-      <Field label="Number of Guests">
-        <input
-          type="number"
-          name="guests"
-          value={form.guests}
-          onChange={handleChange}
-          min={1}
-          max={30}
-          className={inputCls}
-          placeholder="8"
-        />
-      </Field>
-
+      {/* Message */}
       <Field label="Tell us about your ideal charter">
         <textarea
           name="message"
-          value={form.message}
-          onChange={handleChange}
           rows={5}
           className={cn(inputCls, "resize-none")}
-          placeholder="The style of yacht you have in mind, activities, any special requests…"
+          placeholder="The style of yacht you have in mind, any special requests, occasions to celebrate…"
         />
+        <ValidationError field="message" errors={state.errors} className="mt-1 text-xs text-red-500" />
       </Field>
+
+      {/* General form error */}
+      <ValidationError errors={state.errors} className="text-xs text-red-500" />
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={state.submitting}
         className={cn(
           "inline-flex items-center gap-3 bg-ocean-700 px-8 py-4 text-xs font-sans tracking-[0.12em] uppercase text-white transition-all duration-500",
-          loading
-            ? "opacity-60 cursor-not-allowed"
-            : "hover:bg-ocean-600"
+          state.submitting ? "opacity-60 cursor-not-allowed" : "hover:bg-ocean-600"
         )}
       >
-        {loading ? "Sending…" : "Send Enquiry"}
-        {!loading && <ArrowRight size={14} />}
+        {state.submitting ? "Sending…" : "Send Enquiry"}
+        {!state.submitting && <ArrowRight size={14} />}
       </button>
     </form>
   );
