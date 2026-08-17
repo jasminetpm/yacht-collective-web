@@ -149,9 +149,11 @@ export const YACHTS: Yacht[] = [
     image: "/images/yachts/horizon-105/horizon-105.jpg",
     images: [
       "/images/yachts/horizon-105/horizon-105.jpg",
-      "/images/yachts/horizon-105/horizon-105-yacht.webp",
-      "/images/yachts/horizon-105/horizon-105-2.avif",
+      "/images/yachts/horizon-105/horizon-105-yacht.jpg",
+      "/images/yachts/horizon-105/horizon-105-2.jpg",
       "/images/yachts/horizon-105/horizon-105-3.webp",
+      "/images/yachts/horizon-105/horizon-105-4.jpg",
+      "/images/yachts/horizon-105/horizon-105-5.jpg",
       "/images/yachts/horizon-105/horizon-105-cabin-1.webp",
       "/images/yachts/horizon-105/horizon-105-cabin-2.webp",
       "/images/yachts/horizon-105/horizon-105-flybridge.jpg",
