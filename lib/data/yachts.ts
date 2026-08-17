@@ -92,9 +92,23 @@ export const YACHTS: Yacht[] = [
     cabins: 2,
     crew: 2,
     rateFrom: 1700,
-    image: "/images/yachts/ferretti-60.webp",
+    image: "/images/yachts/ferretti-60/ferretti-60.webp",
     images: [
-      // Add your gallery photos here — e.g. "/images/yachts/ferretti-60/02.webp"
+      "/images/yachts/ferretti-60/1",
+      "/images/yachts/ferretti-60/2",
+      "/images/yachts/ferretti-60/3",
+      "/images/yachts/ferretti-60/4",
+      "/images/yachts/ferretti-60/5",
+      "/images/yachts/ferretti-60/6",
+      "/images/yachts/ferretti-60/7",
+      "/images/yachts/ferretti-60/8",
+      "/images/yachts/ferretti-60/9",
+      "/images/yachts/ferretti-60/10",
+      "/images/yachts/ferretti-60/11",
+      "/images/yachts/ferretti-60/12",
+      "/images/yachts/ferretti-60/13",
+      "/images/yachts/ferretti-60/14",
+      "/images/yachts/ferretti-60/15"
     ],
     description:
       "The Ferretti 60 is a masterpiece of Italian naval design — long, low, and breathtakingly proportioned. Her sleek flybridge and generous aft deck make her a natural entertainer, while two well-appointed cabins offer privacy and comfort for smaller, more intimate parties. Whether you're hosting clients, celebrating a milestone, or simply seeking an exclusive afternoon on the water, the Ferretti 60 delivers an experience that is wholly refined.",
@@ -131,9 +145,16 @@ export const YACHTS: Yacht[] = [
     cabins: 3,
     crew: 5,
     rateFrom: 3900,
-    image: "/images/yachts/horizon-105.jpg",
+    image: "/images/yachts/horizon-105/horizon-105.jpg",
     images: [
-      // Add your gallery photos here — e.g. "/images/yachts/horizon-105/02.jpg"
+      "/images/yachts/horizon-105/horizon-105.jpg",
+      "/images/yachts/horizon-105/horizon-105-yacht.webp",
+      "/images/yachts/horizon-105/horizon-105-2.avif",
+      "/images/yachts/horizon-105/horizon-105-3.webp",
+      "/images/yachts/horizon-105/horizon-105-cabin-1.webp",
+      "/images/yachts/horizon-105/horizon-105-cabin-2.webp",
+      "/images/yachts/horizon-105/horizon-105-flybridge.jpg"'
+      "/images/yachts/horizon-105/horizon-105-giant-water-slide.webp"
     ],
     description:
       "The Horizon 105 is in a class of her own. At 105 feet, she is one of the largest charter vessels in Singapore — a floating venue of extraordinary scale and luxury. Multiple expansive decks, a jacuzzi, full karaoke suite, and a professional crew of five ensure every charter is an event to remember. Whether you're hosting 55 guests for a product launch, rewarding your team, or celebrating in the grandest possible style, the Horizon 105 sets a standard nothing else in Singapore can match.",
