@@ -94,7 +94,7 @@ export const YACHTS: Yacht[] = [
     rateFrom: 1700,
     image: "/images/yachts/ferretti-60/ferretti-60.webp",
     images: [
-      "/images/yachts/ferretti-60/ferretti-60.webp"
+      "/images/yachts/ferretti-60/ferretti-60.webp",
       "/images/yachts/ferretti-60/1.webp",
       "/images/yachts/ferretti-60/2.webp",
       "/images/yachts/ferretti-60/3.webp",
