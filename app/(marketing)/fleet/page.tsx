@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { YACHTS } from "@/lib/data/yachts";
+import { getYachts } from "@/lib/data/yachts";
 import YachtCard from "@/components/features/YachtCard";
 
 export const metadata: Metadata = {
@@ -10,12 +11,23 @@ export const metadata: Metadata = {
     "Explore our curated collection of luxury yachts available for private charter in Singapore.",
 };
 
-export default function FleetPage() {
+export default async function FleetPage() {
+  const yachts = await getYachts();
+
   return (
     <>
       {/* ── Page Hero ── */}
       <section className="relative flex min-h-[55vh] items-end bg-ocean-700 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-ocean-900 via-ocean-700 to-ocean-800" />
+        <Image
+          src="/images/fleet/hero.jpg"
+          alt="Private charter yachts moored in Singapore"
+          fill
+          loading="eager"
+          fetchPriority="high"
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ocean-950/90 via-ocean-900/60 to-ocean-900/30" />
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -41,7 +53,7 @@ export default function FleetPage() {
       <section className="bg-pearl border-b border-alabaster-dark">
         <div className="mx-auto max-w-content-xl px-6 lg:px-12 py-5 flex items-center">
           <p className="text-xs text-charcoal-400 font-sans">
-            <span className="text-ocean-700 font-medium">{YACHTS.length} vessels</span>
+            <span className="text-ocean-700 font-medium">{yachts.length} {yachts.length === 1 ? "vessel" : "vessels"}</span>
             &nbsp;available for charter in Singapore
           </p>
         </div>
@@ -51,7 +63,7 @@ export default function FleetPage() {
       <section className="bg-alabaster py-20 lg:py-28">
         <div className="mx-auto max-w-content-xl px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {YACHTS.map((yacht) => (
+            {yachts.map((yacht) => (
               <YachtCard key={yacht.id} yacht={yacht} />
             ))}
           </div>

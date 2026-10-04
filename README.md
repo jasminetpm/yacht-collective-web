@@ -1,5 +1,47 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Managing the fleet (Google Sheet)
+
+The Fleet page, the homepage carousel and every `/fleet/<id>` page read from a Google Sheet. Add or edit a row and the site updates within about 5 minutes, with no code changes or redeploy.
+
+### One-time setup
+
+1. In Google Sheets, create a blank sheet named **Yacht Collective - Fleet**, then **File > Import > Upload** `content/fleet-starter.csv` and choose **Replace current sheet**.
+2. **File > Share > Publish to web**: pick the fleet tab, choose **Comma-separated values (.csv)**, click **Publish**, and copy the link.
+3. In Vercel, go to **Project > Settings > Environment Variables** and add:
+   - `FLEET_SHEET_CSV_URL`: the link from step 2.
+   - `REVALIDATE_SECRET` (optional): any long random password, which enables instant refresh.
+4. Redeploy once. For local development, put the same variables in `.env.local`.
+
+### Columns
+
+| Column | What to enter |
+| --- | --- |
+| `id` | URL slug, e.g. `lagoon-62` gives `/fleet/lagoon-62`. Leave blank to generate it from the name. |
+| `name`, `tagline`, `category`, `location`, `description` | Plain text |
+| `lengthFt`, `guests`, `cabins`, `crew`, `rateFrom` | Numbers (`S$2,900` and `62 ft` are fine) |
+| `highlights`, `amenities` | One item per line inside the cell (Alt+Enter, or Cmd+Enter on Mac) |
+| `images` | One photo link per line. The first is the card cover photo. |
+| `published` | `TRUE` to show, `FALSE` to hide. Blank counts as shown. |
+| `order` | Display order (1 comes first) |
+| `gradient` | Optional background shown when there are no photos: `navy`, `charcoal` or `midnight` |
+
+Rows with a missing name or an invalid number are skipped, so they don't break the site. Check the Vercel logs for `[fleet sheet]` warnings.
+
+### Photos
+
+Each line in `images` can be:
+
+- **Google Drive**: upload the photo, then **Share > General access > Anyone with the link**, and paste the share link.
+- **Any https image link**, such as Cloudinary or Imgur.
+- **A file in this repo**, e.g. `/images/yachts/lagoon-62/01.jpg` (stored in `public/images/yachts/`).
+
+### Refresh immediately
+
+Changes appear automatically within 5 minutes. To refresh right away, open `https://<your-site>/api/revalidate?secret=<REVALIDATE_SECRET>` and then reload the page.
+
+If the sheet link is missing or the sheet can't be reached, the site shows the built-in fleet from `lib/data/yachts.fallback.ts`.
+
 ## Getting Started
 
 First, run the development server:

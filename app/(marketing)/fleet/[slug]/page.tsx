@@ -3,12 +3,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Anchor, Users, BedDouble, Ruler, MapPin, Star } from "lucide-react";
-import { YACHTS, getYachtBySlug } from "@/lib/data/yachts";
+import { getYachts } from "@/lib/data/yachts";
 import YachtGallery from "@/components/features/YachtGallery";
 
-/* ── Static params for build-time generation ── */
-export function generateStaticParams() {
-  return YACHTS.map((y) => ({ slug: y.id }));
+/* ── Static params for build-time generation; yachts added to the sheet later render on demand ── */
+export const dynamicParams = true;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const yachts = await getYachts();
+  return yachts.map((y) => ({ slug: y.id }));
 }
 
 /* ── Dynamic metadata ── */
@@ -18,7 +22,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const yacht = getYachtBySlug(slug);
+  const yachts = await getYachts();
+  const yacht = yachts.find((y) => y.id === slug);
   if (!yacht) return {};
   return {
     title: yacht.name,
@@ -35,7 +40,8 @@ export default async function YachtDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const yacht = getYachtBySlug(slug);
+  const yachts = await getYachts();
+  const yacht = yachts.find((y) => y.id === slug);
   if (!yacht) notFound();
 
   const specs = [
@@ -256,7 +262,7 @@ export default async function YachtDetailPage({
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {YACHTS.filter((y) => y.id !== yacht.id).map((y) => (
+            {yachts.filter((y) => y.id !== yacht.id).map((y) => (
               <Link
                 key={y.id}
                 href={`/fleet/${y.id}`}

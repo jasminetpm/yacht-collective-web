@@ -6,20 +6,17 @@ import HeroSearchBar from "@/components/features/HeroSearchBar";
 import CorporateClients from "@/components/features/CorporateClients";
 import InstagramCarousel from "@/components/features/InstagramCarousel";
 import FeaturedVesselsCarousel from "@/components/features/FeaturedVesselsCarousel";
-import { YACHTS } from "@/lib/data/yachts";
+import { getYachts } from "@/lib/data/yachts";
 
 export const metadata: Metadata = {
   title: "Yacht Collective | Ultra-Luxury Charter Experiences",
   description:
-    "Bespoke yacht charter experiences in the world's most exclusive destinations.",
+    "Private yacht charters in Singapore, from sunset cruises to celebrations and corporate events. 300+ charters hosted, rated 5 stars on Google.",
 };
 
 /* ─────────────────────────────────────────────────────────── */
 /*  Data                                                       */
 /* ─────────────────────────────────────────────────────────── */
-
-/* Featured yachts pulled from shared data file — edit lib/data/yachts.ts */
-const FEATURED_YACHTS = YACHTS;
 
 const GOOGLE_REVIEWS_URL =
   "https://www.google.com/search?q=yacht+collective+singapore&rlz=1C1MIZP_enSG1165SG1165&oq=yacht+collective+singapore&gs_lcrp=EgZjaHJvbWUyCAgAEEUYJxg5MgcIARAAGO8FMgcIAhAAGO8FMgoIAxAAGKIEGIkF0gEIMjc0M2owajeoAgCwAgA&sourceid=chrome&source=chrome.ob&ie=UTF-8#lrd=0x31da1f03c3fa1dc7:0x3a0f6ea1ae9ca73d,1,,,,";
@@ -112,7 +109,10 @@ const VALUES = [
 /*  Page                                                       */
 /* ─────────────────────────────────────────────────────────── */
 
-export default function HomePage() {
+export default async function HomePage() {
+  /* Featured yachts come from the fleet Google Sheet — see lib/data/yachts.ts */
+  const featuredYachts = await getYachts();
+
   return (
     <>
       {/* ════════════════════════════════════════════════════ */}
@@ -158,8 +158,8 @@ export default function HomePage() {
         <div className="relative z-10 mx-auto w-full max-w-content-xl px-6 py-8 lg:px-12">
           <div className="flex flex-wrap gap-x-10 gap-y-4 border-t border-white/10 pt-8">
             {[
-              ["150+", "Curated Vessels", null],
-              ["2,400+", "Charters Completed", null],
+              ["300+", "Charters Hosted", null],
+              ["8", "Years on the Water", null],
               ["5.0", "Average Guest Rating", GOOGLE_REVIEWS_URL],
             ].map(([stat, label, href]) => (
               <div key={label} className="min-w-[80px]">
@@ -194,7 +194,7 @@ export default function HomePage() {
       {/* ════════════════════════════════════════════════════ */}
       <section className="bg-alabaster py-24 lg:py-32">
         <div className="mx-auto max-w-content-xl px-6 lg:px-12">
-          <FeaturedVesselsCarousel yachts={FEATURED_YACHTS} />
+          <FeaturedVesselsCarousel yachts={featuredYachts} />
         </div>
       </section>
 
