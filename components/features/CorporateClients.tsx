@@ -31,7 +31,7 @@ export default function CorporateClients() {
   const items = [...CLIENTS, ...CLIENTS];
 
   return (
-    <section className="bg-pearl py-20 lg:py-24 overflow-hidden">
+    <section id="clients" className="scroll-mt-20 bg-pearl py-20 lg:py-24 overflow-hidden">
       <div className="mx-auto max-w-content-xl px-6 lg:px-12 mb-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>

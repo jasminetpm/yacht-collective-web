@@ -34,7 +34,7 @@ const STATS: Stat[] = [
   { value: "300+", label: "Charters hosted" },
   { value: "5.0", label: "Google rating", href: GOOGLE_REVIEWS_URL },
   { value: "8", label: "Years on Singapore's waters" },
-  { value: "Trusted", label: "By Singapore's leading companies" },
+  { value: "Trusted", label: "By Singapore's leading companies", href: "/#clients" },
 ];
 
 const VALUES: Value[] = [
@@ -191,7 +191,14 @@ export default function AboutPage() {
                   key={stat.label}
                   className={`border-champagne-200/60 px-4 py-12 text-center lg:py-16 ${borders}`}
                 >
-                  {stat.href ? (
+                  {stat.href?.startsWith("/") ? (
+                    <Link
+                      href={stat.href}
+                      className="block transition-all duration-500 ease-in-out hover:opacity-70"
+                    >
+                      {content}
+                    </Link>
+                  ) : stat.href ? (
                     <a
                       href={stat.href}
                       target="_blank"
