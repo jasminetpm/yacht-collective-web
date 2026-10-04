@@ -54,7 +54,7 @@ export default function ContactForm() {
             name="firstName"
             required
             className={inputCls}
-            placeholder="Élise"
+            placeholder="Sarah"
           />
           <ValidationError field="firstName" errors={state.errors} className="mt-1 text-xs text-red-500" />
         </Field>
