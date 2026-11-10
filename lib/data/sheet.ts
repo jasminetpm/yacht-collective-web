@@ -125,6 +125,33 @@ export interface SheetYacht {
 }
 
 /**
+ * PRIVACY: the sheet also holds private back-office columns (originalName,
+ * owner*, cost, costNotes, listedOn, sourceUrls, reviewNotes). recordToYacht
+ * below builds the Yacht object from an explicit whitelist of PUBLIC columns
+ * only, so those columns can never reach a page, even though they are in the
+ * CSV. Never spread `record` into the Yacht object. See docs/fleet-sheet.md.
+ */
+export const PUBLIC_COLUMNS = [
+  "id",
+  "name",
+  "tagline",
+  "category",
+  "location",
+  "lengthft",
+  "guests",
+  "cabins",
+  "crew",
+  "ratefrom",
+  "description",
+  "highlights",
+  "amenities",
+  "images",
+  "published",
+  "order",
+  "gradient",
+] as const;
+
+/**
  * Maps one sheet row to a Yacht. Returns null (and logs why) for rows that
  * are unpublished or missing required data, so a bad row never breaks a page.
  */
@@ -138,20 +165,29 @@ export function recordToYacht(record: Record<string, string>, index: number): Sh
     return null;
   }
 
-  const numbers = {
+  const required = {
     lengthFt: toNumber(record.lengthft),
     guests: toNumber(record.guests),
-    cabins: toNumber(record.cabins),
-    crew: toNumber(record.crew),
     rateFrom: toNumber(record.ratefrom),
   };
-  const invalid = Object.entries(numbers)
+  const invalid = Object.entries(required)
     .filter(([, n]) => Number.isNaN(n))
     .map(([key]) => key);
   if (invalid.length > 0) {
     console.warn(`[fleet sheet] Row ${index + 2} (${name}) skipped: invalid ${invalid.join(", ")}.`);
     return null;
   }
+
+  // Cabins and crew are optional: blank means "unknown" (0) and the UI hides them.
+  const optionalCount = (value: string | undefined) => {
+    const n = toNumber(value);
+    return Number.isNaN(n) ? 0 : n;
+  };
+  const numbers = {
+    ...required,
+    cabins: optionalCount(record.cabins),
+    crew: optionalCount(record.crew),
+  };
 
   const images = toList(record.images).map(toImageUrl);
   const preset = GRADIENT_PRESETS[(record.gradient ?? "").toLowerCase()] ?? GRADIENT_PRESETS.navy;

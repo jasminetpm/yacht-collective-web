@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getYachts } from "@/lib/data/yachts";
-import YachtCard from "@/components/features/YachtCard";
+import FleetBrowser from "@/components/features/FleetBrowser";
 
 export const metadata: Metadata = {
   title: "The Fleet",
@@ -62,11 +62,7 @@ export default async function FleetPage() {
       {/* ── Fleet Grid ── */}
       <section className="bg-alabaster py-20 lg:py-28">
         <div className="mx-auto max-w-content-xl px-6 lg:px-12">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {yachts.map((yacht) => (
-              <YachtCard key={yacht.id} yacht={yacht} />
-            ))}
-          </div>
+          <FleetBrowser yachts={yachts} />
         </div>
       </section>
 

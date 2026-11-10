@@ -47,8 +47,9 @@ export default async function YachtDetailPage({
   const specs = [
     { icon: Ruler, label: "Length", value: `${yacht.lengthFt} ft` },
     { icon: Users, label: "Up to", value: `${yacht.guests} guests` },
-    { icon: BedDouble, label: "Cabins", value: `${yacht.cabins} cabins` },
-    { icon: Anchor, label: "Crew", value: `${yacht.crew} crew` },
+    // Cabins / crew are optional in the sheet; 0 means "not provided" so we hide them.
+    ...(yacht.cabins > 0 ? [{ icon: BedDouble, label: "Cabins", value: `${yacht.cabins} cabins` }] : []),
+    ...(yacht.crew > 0 ? [{ icon: Anchor, label: "Crew", value: `${yacht.crew} crew` }] : []),
   ];
 
   return (
@@ -206,13 +207,17 @@ export default async function YachtDetailPage({
                     <span className="text-charcoal-400">Max guests</span>
                     <span className="font-medium text-charcoal-700">{yacht.guests}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-charcoal-400">Cabins</span>
-                    <span className="font-medium text-charcoal-700">{yacht.cabins}</span>
-                  </div>
+                  {yacht.cabins > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-charcoal-400">Cabins</span>
+                      <span className="font-medium text-charcoal-700">{yacht.cabins}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-charcoal-400">Crew</span>
-                    <span className="font-medium text-charcoal-700">{yacht.crew} included</span>
+                    <span className="font-medium text-charcoal-700">
+                      {yacht.crew > 0 ? `${yacht.crew} included` : "Captain & crew included"}
+                    </span>
                   </div>
                 </div>
 

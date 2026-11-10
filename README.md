@@ -19,7 +19,8 @@ The Fleet page, the homepage carousel and every `/fleet/<id>` page read from a G
 | --- | --- |
 | `id` | URL slug, e.g. `lagoon-62` gives `/fleet/lagoon-62`. Leave blank to generate it from the name. |
 | `name`, `tagline`, `category`, `location`, `description` | Plain text |
-| `lengthFt`, `guests`, `cabins`, `crew`, `rateFrom` | Numbers (`S$2,900` and `62 ft` are fine) |
+| `lengthFt`, `guests`, `rateFrom` | Numbers (`S$2,900` and `62 ft` are fine). Required. |
+| `cabins`, `crew` | Numbers, optional. Leave blank if unknown and the site hides them. |
 | `highlights`, `amenities` | One item per line inside the cell (Alt+Enter, or Cmd+Enter on Mac) |
 | `images` | One photo link per line. The first is the card cover photo. |
 | `published` | `TRUE` to show, `FALSE` to hide. Blank counts as shown. |
@@ -27,6 +28,8 @@ The Fleet page, the homepage carousel and every `/fleet/<id>` page read from a G
 | `gradient` | Optional background shown when there are no photos: `navy`, `charcoal` or `midnight` |
 
 Rows with a missing name or an invalid number are skipped, so they don't break the site. Check the Vercel logs for `[fleet sheet]` warnings.
+
+The sheet may also contain private back-office columns (owner contacts, costs, original names). The site never reads them. See [`docs/fleet-sheet.md`](docs/fleet-sheet.md) for the full column guide, the public/private split, pricing policy and photo workflow.
 
 ### Photos
 

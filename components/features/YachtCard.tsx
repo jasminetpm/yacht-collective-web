@@ -8,11 +8,12 @@ import { cn } from "@/lib/utils";
 import type { Yacht } from "@/lib/data/yachts";
 
 export default function YachtCard({ yacht }: { yacht: Yacht }) {
-  /* Build the full photo list: hero image first, then gallery extras */
+  /* Build the photo list for the card: hero image first, then a few gallery extras.
+     Capped so a 20+ photo gallery doesn't make every card heavy; the detail page shows all. */
   const allImages = [
     ...(yacht.image ? [yacht.image] : []),
     ...yacht.images.filter((img) => img !== yacht.image),
-  ];
+  ].slice(0, 8);
 
   const [active, setActive] = useState(0);
 
@@ -44,21 +45,16 @@ export default function YachtCard({ yacht }: { yacht: Yacht }) {
       {/* ── Card image with mini carousel ── */}
       <div className={`relative h-64 overflow-hidden bg-gradient-to-br ${yacht.gradient}`}>
 
-        {/* Images */}
+        {/* Images — only the active photo is mounted, so cards stay light in long lists */}
         {allImages.length > 0 ? (
-          allImages.map((src, i) => (
-            <Image
-              key={src}
-              src={src}
-              alt={`${yacht.name} — photo ${i + 1}`}
-              fill
-              className={cn(
-                "object-cover transition-all duration-500",
-                i === active ? "opacity-100 scale-100" : "opacity-0 scale-105"
-              )}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-          ))
+          <Image
+            key={allImages[active]}
+            src={allImages[active]}
+            alt={`${yacht.name} — photo ${active + 1}`}
+            fill
+            className="object-cover transition-all duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${yacht.accentGradient}`} />
         )}
@@ -137,10 +133,12 @@ export default function YachtCard({ yacht }: { yacht: Yacht }) {
             <Users size={11} className="text-champagne-500" />
             Up to {yacht.guests} guests
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-sm bg-alabaster px-3 py-1.5 text-xs text-charcoal-600">
-            <BedDouble size={11} className="text-champagne-500" />
-            {yacht.cabins} cabins
-          </span>
+          {yacht.cabins > 0 && (
+            <span className="inline-flex items-center gap-1.5 rounded-sm bg-alabaster px-3 py-1.5 text-xs text-charcoal-600">
+              <BedDouble size={11} className="text-champagne-500" />
+              {yacht.cabins} cabins
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-1.5 text-xs text-charcoal-400">
