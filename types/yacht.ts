@@ -15,15 +15,14 @@ export interface Yacht {
   currency: string;
 }
 
-export interface YachtSummary
-  extends Pick<
-    Yacht,
-    | "id"
-    | "slug"
-    | "name"
-    | "guestCapacity"
-    | "heroImageUrl"
-    | "baseLocation"
-    | "weeklyRateFrom"
-    | "currency"
-  > {}
+export type YachtSummary = Pick<
+  Yacht,
+  | "id"
+  | "slug"
+  | "name"
+  | "guestCapacity"
+  | "heroImageUrl"
+  | "baseLocation"
+  | "weeklyRateFrom"
+  | "currency"
+>;

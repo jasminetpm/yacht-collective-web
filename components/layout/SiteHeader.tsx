@@ -15,8 +15,11 @@ const NAV_LINKS = [
 
 export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  // The mobile menu is "open" only for the page it was opened on, so it closes by itself on navigation
+  // (no effect needed to reset it).
+  const [menuOpenedOn, setMenuOpenedOn] = useState<string | null>(null);
+  const mobileOpen = menuOpenedOn === pathname;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 72);
@@ -24,10 +27,6 @@ export default function SiteHeader() {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   return (
     <header
@@ -87,7 +86,7 @@ export default function SiteHeader() {
             "md:hidden transition-colors duration-300",
             scrolled ? "text-ocean-700" : "text-white"
           )}
-          onClick={() => setMobileOpen((prev) => !prev)}
+          onClick={() => setMenuOpenedOn((opened) => (opened === pathname ? null : pathname))}
           aria-label="Toggle navigation"
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
