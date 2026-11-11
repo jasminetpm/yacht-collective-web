@@ -39,13 +39,23 @@ function Chip({
   );
 }
 
-/** Fleet grid with simple filters by vessel type and guest count. */
+/** "ONE°15 Marina, Sentosa Cove, Singapore" -> "ONE°15 Marina" */
+function marinaOf(location: string): string {
+  return location.split(",")[0].trim();
+}
+
+/** Fleet grid with simple filters by vessel type, marina and guest count. */
 export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   const [category, setCategory] = useState("All");
+  const [marina, setMarina] = useState("All");
   const [bandIndex, setBandIndex] = useState(0);
 
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(yachts.map((y) => y.category).filter(Boolean)))],
+    [yachts]
+  );
+  const marinas = useMemo(
+    () => ["All", ...Array.from(new Set(yachts.map((y) => marinaOf(y.location)).filter(Boolean)))],
     [yachts]
   );
 
@@ -53,6 +63,7 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   const visible = yachts.filter(
     (y) =>
       (category === "All" || y.category === category) &&
+      (marina === "All" || marinaOf(y.location) === marina) &&
       y.guests >= band.min &&
       y.guests <= band.max
   );
@@ -70,6 +81,18 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
             </Chip>
           ))}
         </div>
+        {marinas.length > 2 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="mr-2 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-charcoal-400">
+              Marina
+            </span>
+            {marinas.map((m) => (
+              <Chip key={m} active={marina === m} onClick={() => setMarina(m)}>
+                {m}
+              </Chip>
+            ))}
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-2">
           <span className="mr-2 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-charcoal-400">
             Guests
