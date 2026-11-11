@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getYachts } from "@/lib/data/yachts";
-import FleetBrowser from "@/components/features/FleetBrowser";
+import FleetBrowser, { FleetGrid } from "@/components/features/FleetBrowser";
 
 export const metadata: Metadata = {
   title: "The Fleet",
@@ -62,7 +63,9 @@ export default async function FleetPage() {
       {/* ── Fleet Grid ── */}
       <section className="bg-alabaster py-20 lg:py-28">
         <div className="mx-auto max-w-content-xl px-6 lg:px-12">
-          <FleetBrowser yachts={yachts} />
+          <Suspense fallback={<FleetGrid yachts={yachts} />}>
+            <FleetBrowser yachts={yachts} />
+          </Suspense>
         </div>
       </section>
 

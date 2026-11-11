@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Anchor, Users, BedDouble, Ruler, MapPin, Star } from "lucide-react";
+import { ArrowRight, Anchor, Users, BedDouble, Ruler, MapPin, Star } from "lucide-react";
 import { getYachts } from "@/lib/data/yachts";
 import YachtGallery from "@/components/features/YachtGallery";
+import BackToFleetLink from "@/components/features/BackToFleetLink";
 
 /* ── Static params for build-time generation; yachts added to the sheet later render on demand ── */
 export const dynamicParams = true;
@@ -67,13 +68,7 @@ export default async function YachtDetailPage({
       <div className="bg-alabaster">
         {/* Breadcrumb + back */}
         <div className="mx-auto max-w-content-xl px-6 lg:px-12 pt-8">
-          <Link
-            href="/fleet"
-            className="inline-flex items-center gap-2 text-xs font-sans tracking-[0.1em] uppercase text-charcoal-400 hover:text-ocean-700 transition-colors duration-300"
-          >
-            <ArrowLeft size={12} />
-            Back to Fleet
-          </Link>
+          <BackToFleetLink className="inline-flex items-center gap-2 text-xs font-sans tracking-[0.1em] uppercase text-charcoal-400 hover:text-ocean-700 transition-colors duration-300" />
         </div>
 
         <div className="mx-auto max-w-content-xl px-6 lg:px-12 py-12 lg:py-16">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, X, Expand } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,13 +17,32 @@ export default function YachtGallery({ images, yachtName, gradient }: YachtGalle
   const [lightbox, setLightbox] = useState(false);
 
   const hasImages = images.length > 0;
+  const count = images.length;
 
   function prev() {
-    setActive((i) => (i === 0 ? images.length - 1 : i - 1));
+    setActive((i) => (i === 0 ? count - 1 : i - 1));
   }
   function next() {
-    setActive((i) => (i === images.length - 1 ? 0 : i + 1));
+    setActive((i) => (i === count - 1 ? 0 : i + 1));
   }
+
+  /* Keyboard navigation while the photo is expanded: ← previous, → next, Esc closes. */
+  useEffect(() => {
+    if (!lightbox) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setActive((i) => (i === 0 ? count - 1 : i - 1));
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setActive((i) => (i === count - 1 ? 0 : i + 1));
+      } else if (e.key === "Escape") {
+        setLightbox(false);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lightbox, count]);
 
   /* ── No images yet — show gradient placeholder ── */
   if (!hasImages) {
