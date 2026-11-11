@@ -33,7 +33,7 @@ How the private columns are kept off the site:
 | `description`, `highlights`, `amenities` | Plain text; `highlights` and `amenities` are one item per line inside the cell. |
 | `images` | One path/URL per line. First image is the card cover. |
 | `published` | `TRUE`/`FALSE`. Blank counts as shown. |
-| `order` | Display order (1 first) and the "Recommended" sort on the Fleet page. Currently ranked by how luxurious / well kept each yacht looks: original three first, newest and largest next, older or plainer boats lower, no-photo boats and Republic of Singapore Yacht Club boats last. |
+| `order` | Display order (1 first) and the "Recommended" sort on the Fleet page. Currently ranked by how luxurious / well kept each yacht looks: original three first, newest and largest next, older or plainer boats lower, Republic of Singapore Yacht Club boats last. |
 | `gradient` | Fallback background when there are no photos (`navy`, `charcoal`, `midnight`). |
 
 ### Copy style
@@ -90,6 +90,7 @@ Judgment calls to double check (also flagged per row in `reviewNotes`):
 - Possible duplicates: **Mikanna / One Lotus** (47ft Leopard, 33 guests); **Sunseeker 105 / Horizon 105** (105ft, 55 guests); **Ellyn / Manda 72** (~70-72ft, S$3,270).
 - **Eagle Wings 4 = Vesper Glow** (same boat on four brokers). **Zen Sea I = Helium.** **Horizon 105 = Leviathan 8**, **Lagoon 62 = Jyohana**, **Ferretti 60 = Vittoria**.
 - Models for generic listings (e.g. `Motor Yacht 47`) are unknown; rename once the owner confirms.
+- Removed for having no usable photos: **Motor Yacht 45** (Le Tara), **Motor Yacht 47 II** (Golden Ocean), **Mainship 40** (Veyron), **Bayliner 35** (Fun@Sea), **Grand Banks 36** (Popeye). Their rows are saved outside the repo in `fleet-private/removed-yachts-no-photos.csv`; re-add them when photos exist.
 - Not added (not enough data): **Lady Olivia** (YachtBookings), **Nabula** (fishing boat, no length found), **Sailing tall ship** (Sea Experiences, 130 guests, no length). Add them when specs are confirmed.
 - The jet skis on zenseayacht.com.sg are not yachts and were skipped.
 - Cabin and crew counts were left blank where brokers disagreed or gave none.
