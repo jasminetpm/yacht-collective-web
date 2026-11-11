@@ -55,8 +55,8 @@ export default async function YachtDetailPage({
 
   return (
     <>
-      {/* ── Gallery ── */}
-      <div className="pt-16 lg:pt-20">
+      {/* ── Gallery ── (dark backdrop so the transparent, white-text header is readable above the photo) */}
+      <div className="bg-ocean-950 pt-16 lg:pt-20">
         <YachtGallery
           images={yacht.images}
           yachtName={yacht.name}
