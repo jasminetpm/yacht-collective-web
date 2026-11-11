@@ -60,7 +60,7 @@ Taglines, descriptions, highlights and amenities share one structure so the flee
 ### Pricing policy used (change as you see fit)
 
 - `cost` = the **lowest** "from" price any broker lists (4 hours, weekday). Brokers include different guest counts and GST treatment, so this is a starting point, not a quote.
-- Public `rateFrom` = the **highest** listed broker price rounded up to S$10, **then +20%**, rounded to S$10 (the original three yachts also had +20% added to their previous site price). This is a placeholder; set your own margin per yacht.
+- Public `rateFrom` = the **highest** listed broker price rounded up to S$10, **then +20%**, rounded to S$10, **then +9%**, rounded to S$10 (the original three yachts had the same +20% and +9% applied to their previous site price). The +9% matches the uplift applied in the client brochures. This is a placeholder; set your own margin per yacht.
 
 ## Photos
 

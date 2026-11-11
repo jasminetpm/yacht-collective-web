@@ -15,7 +15,7 @@ export const FALLBACK_YACHTS: Yacht[] = [
     guests: 36,
     cabins: 3,
     crew: 3,
-    rateFrom: 2900,
+    rateFrom: 3790,
     image: "/images/yachts/lagoon-62/lagoon-62.jpg",
     images: [
       "/images/yachts/lagoon-62/lagoon-62.jpg",
@@ -59,7 +59,7 @@ export const FALLBACK_YACHTS: Yacht[] = [
     guests: 23,
     cabins: 2,
     crew: 2,
-    rateFrom: 1700,
+    rateFrom: 2220,
     image: "/images/yachts/ferretti-60/ferretti-60.webp",
     images: [
       "/images/yachts/ferretti-60/ferretti-60.webp",
@@ -113,7 +113,7 @@ export const FALLBACK_YACHTS: Yacht[] = [
     guests: 55,
     cabins: 3,
     crew: 5,
-    rateFrom: 3900,
+    rateFrom: 5100,
     image: "/images/yachts/horizon-105/horizon-105.jpg",
     images: [
       "/images/yachts/horizon-105/horizon-105.jpg",
