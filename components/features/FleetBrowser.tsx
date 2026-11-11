@@ -39,16 +39,41 @@ function Chip({
   );
 }
 
+const SORT_OPTIONS = [
+  { value: "featured", label: "Recommended" },
+  { value: "guests-desc", label: "Capacity: most guests" },
+  { value: "guests-asc", label: "Capacity: fewest guests" },
+  { value: "price-asc", label: "Price: low to high" },
+  { value: "price-desc", label: "Price: high to low" },
+  { value: "length-desc", label: "Size: longest first" },
+  { value: "length-asc", label: "Size: shortest first" },
+] as const;
+type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+
+/** "Recommended" keeps the sheet order; ties in other sorts also fall back to it (stable sort). */
+function sortYachts(list: Yacht[], sort: SortValue): Yacht[] {
+  const by: Record<Exclude<SortValue, "featured">, (a: Yacht, b: Yacht) => number> = {
+    "guests-desc": (a, b) => b.guests - a.guests,
+    "guests-asc": (a, b) => a.guests - b.guests,
+    "price-asc": (a, b) => a.rateFrom - b.rateFrom,
+    "price-desc": (a, b) => b.rateFrom - a.rateFrom,
+    "length-desc": (a, b) => b.lengthFt - a.lengthFt,
+    "length-asc": (a, b) => a.lengthFt - b.lengthFt,
+  };
+  return sort === "featured" ? list : [...list].sort(by[sort]);
+}
+
 /** "ONE°15 Marina, Sentosa Cove, Singapore" -> "ONE°15 Marina" */
 function marinaOf(location: string): string {
   return location.split(",")[0].trim();
 }
 
-/** Fleet grid with simple filters by vessel type, marina and guest count. */
+/** Fleet grid with filters (type, marina, guests) and a sort control. */
 export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   const [category, setCategory] = useState("All");
   const [marina, setMarina] = useState("All");
   const [bandIndex, setBandIndex] = useState(0);
+  const [sort, setSort] = useState<SortValue>("featured");
 
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(yachts.map((y) => y.category).filter(Boolean)))],
@@ -60,12 +85,15 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   );
 
   const band = GUEST_BANDS[bandIndex];
-  const visible = yachts.filter(
-    (y) =>
-      (category === "All" || y.category === category) &&
-      (marina === "All" || marinaOf(y.location) === marina) &&
-      y.guests >= band.min &&
-      y.guests <= band.max
+  const visible = sortYachts(
+    yachts.filter(
+      (y) =>
+        (category === "All" || y.category === category) &&
+        (marina === "All" || marinaOf(y.location) === marina) &&
+        y.guests >= band.min &&
+        y.guests <= band.max
+    ),
+    sort
   );
 
   return (
@@ -103,9 +131,25 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
             </Chip>
           ))}
         </div>
-        <p className="text-xs text-charcoal-400" aria-live="polite">
-          Showing {visible.length} of {yachts.length} vessels
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs text-charcoal-400" aria-live="polite">
+            Showing {visible.length} of {yachts.length} vessels
+          </p>
+          <label className="flex items-center gap-3 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-charcoal-400">
+            Sort by
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as SortValue)}
+              className="border border-charcoal-200 bg-white px-3 py-2 text-xs normal-case tracking-normal text-charcoal-600 focus:border-ocean-700 focus:outline-none"
+            >
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       {visible.length > 0 ? (

@@ -33,7 +33,7 @@ How the private columns are kept off the site:
 | `description`, `highlights`, `amenities` | Plain text; `highlights` and `amenities` are one item per line inside the cell. |
 | `images` | One path/URL per line. First image is the card cover. |
 | `published` | `TRUE`/`FALSE`. Blank counts as shown. |
-| `order` | Display order (1 first). |
+| `order` | Display order (1 first) and the "Recommended" sort on the Fleet page. Currently ranked by how luxurious / well kept each yacht looks: original three first, newest and largest next, older or plainer boats lower, no-photo boats and Republic of Singapore Yacht Club boats last. |
 | `gradient` | Fallback background when there are no photos (`navy`, `charcoal`, `midnight`). |
 
 ### Copy style
@@ -60,7 +60,7 @@ Taglines, descriptions, highlights and amenities share one structure so the flee
 ### Pricing policy used (change as you see fit)
 
 - `cost` = the **lowest** "from" price any broker lists (4 hours, weekday). Brokers include different guest counts and GST treatment, so this is a starting point, not a quote.
-- Public `rateFrom` = the **highest** listed price rounded up to S$10. This is a placeholder; set your own margin per yacht. Existing yachts keep their current public price.
+- Public `rateFrom` = the **highest** listed broker price rounded up to S$10, **then +10%**, rounded to S$10 (the original three yachts also had +10% added to their previous price). This is a placeholder; set your own margin per yacht.
 
 ## Photos
 
