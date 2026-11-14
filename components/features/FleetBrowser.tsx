@@ -203,27 +203,6 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   return (
     <div>
       <div className="mb-10 flex flex-col gap-5">
-        <div className="relative max-w-md">
-          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-400" />
-          <input
-            type="search"
-            value={searchInput}
-            onFocus={() => {
-              searchFocused.current = true;
-            }}
-            onBlur={() => {
-              searchFocused.current = false;
-            }}
-            onChange={(e) => {
-              setSearchInput(e.target.value);
-              update({ q: e.target.value.trim() === "" ? null : e.target.value });
-            }}
-            placeholder="Search yachts by name, type or marina"
-            aria-label="Search yachts"
-            className="w-full border border-charcoal-200 bg-white py-2.5 pl-9 pr-3 text-xs text-charcoal-600 placeholder:text-charcoal-400 focus:border-ocean-700 focus:outline-none"
-          />
-        </div>
-
         <div className="flex flex-wrap items-center gap-2">
           <span className={LABEL}>Type</span>
           <Chip active={selectedCategories.size === 0} onClick={() => update({ type: null })}>
@@ -301,20 +280,42 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
           <p className="text-xs text-charcoal-400" aria-live="polite">
             Showing {visible.length} of {yachts.length} vessels
           </p>
-          <label className="flex items-center gap-3 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-charcoal-400">
-            Sort by
-            <select
-              value={sort}
-              onChange={(e) => update({ sort: e.target.value === "featured" ? null : e.target.value })}
-              className="border border-charcoal-200 bg-white px-3 py-2 text-xs normal-case tracking-normal text-charcoal-600 focus:border-ocean-700 focus:outline-none"
-            >
-              {SORT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div className="relative">
+              <Search size={12} className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-charcoal-400" />
+              <input
+                type="search"
+                value={searchInput}
+                onFocus={() => {
+                  searchFocused.current = true;
+                }}
+                onBlur={() => {
+                  searchFocused.current = false;
+                }}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  update({ q: e.target.value.trim() === "" ? null : e.target.value });
+                }}
+                placeholder="Search"
+                aria-label="Search yachts"
+                className="w-28 border-0 border-b border-charcoal-200 bg-transparent py-1.5 pl-5 pr-1 text-xs text-charcoal-600 placeholder:text-charcoal-400 transition-all duration-300 focus:w-48 focus:border-ocean-700 focus:outline-none"
+              />
+            </div>
+            <label className="flex items-center gap-3 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-charcoal-400">
+              Sort by
+              <select
+                value={sort}
+                onChange={(e) => update({ sort: e.target.value === "featured" ? null : e.target.value })}
+                className="border border-charcoal-200 bg-white px-3 py-2 text-xs normal-case tracking-normal text-charcoal-600 focus:border-ocean-700 focus:outline-none"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </div>
       </div>
 
