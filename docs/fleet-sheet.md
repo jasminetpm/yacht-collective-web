@@ -33,7 +33,7 @@ How the private columns are kept off the site:
 | `description`, `highlights`, `amenities` | Plain text; `highlights` and `amenities` are one item per line inside the cell. |
 | `images` | One path/URL per line. First image is the card cover. |
 | `published` | `TRUE`/`FALSE`. Blank counts as shown. |
-| `order` | Display order (1 first) and the "Recommended" sort on the Fleet page. Currently ranked by how luxurious / well kept each yacht looks: original three first, newest and largest next, older or plainer boats lower, Republic of Singapore Yacht Club boats last. |
+| `order` | Display order (1 first) and the "Recommended" sort on the Fleet page. Currently ranked by how luxurious / well kept each yacht looks: original three first, newest and largest next, older or plainer boats lower, Republic of Singapore Yacht Club boats last. See "Changing the Recommended order" below for an easy way to edit this. |
 | `gradient` | Fallback background when there are no photos (`navy`, `charcoal`, `midnight`). |
 
 ### Copy style
@@ -74,6 +74,25 @@ node scripts/fleet-images-column.mjs --csv    # id,images CSV
 ```
 
 Paste each yacht's list into the `images` column. Folders that end up empty show the gradient fallback. For deployment size, consider compressing or hosting kept photos on a CDN.
+
+## Changing the Recommended order
+
+The Fleet page's "Recommended" sort just follows the `order` column (1 first).
+Renumbering every row by hand in the Sheet is tedious, so `content/fleet-order.txt`
+in the repo is an editable master list — one yacht id per line, top to bottom:
+
+1. Open `content/fleet-order.txt` and reorder the lines (cut/paste a line to
+   move that yacht up or down). Any yacht id you don't mention keeps its
+   current relative position, appended after the ones you did list.
+2. Run `node scripts/fleet-order-column.mjs --csv`. It prints every yacht id
+   with its new order number, sorted A-Z by id.
+3. In the Google Sheet, sort by the `id` column (A-Z), paste the order
+   numbers from step 2 into the `order` column in that same order, then
+   re-sort the sheet by `order` (cosmetic, keeps the sheet readable).
+4. Wait up to 5 minutes, or hit `/api/revalidate?secret=<REVALIDATE_SECRET>`.
+
+`node scripts/fleet-order-column.mjs` (no `--csv`) prints the plain
+rank → id list instead, handy for eyeballing the new order before you commit to it.
 
 ## Adding or changing a yacht
 

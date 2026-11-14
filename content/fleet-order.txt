@@ -1,0 +1,91 @@
+# Recommended order for the Fleet page's SORT BY “Recommended”.
+# One yacht id per line, top to bottom = order 1, 2, 3...
+# Edit this file to reorder (cut/paste a line to move a yacht up or down),
+# then run: node scripts/fleet-order-column.mjs --csv
+# It prints an "id,order" list (sorted A-Z by id) — sort the Google Sheet
+# by the id column, paste the order numbers in, then re-sort by order.
+# Any yacht id missing from this file keeps its place at the end, in its
+# current order (so adding a new row to the sheet doesn't require editing
+# this file first).
+
+lagoon-62  # Lagoon 62
+ferretti-60  # Ferretti 60
+azimut-100  # Azimut 100
+horizon-105  # Horizon 105
+explorer-82  # Explorer 82
+ferretti-112  # Ferretti 112
+sunreef-68  # Sunreef 68
+eastar-56  # Eastar 56
+manda-72  # Manda 72
+dragos-78  # Dragos 78
+sunreef-62  # Sunreef 62
+skywalker-60  # Skywalker 60
+moana-58  # Moana 58
+aquitalia-68  # Aquitalia 68
+bondway-75  # Bondway 75
+cora-48  # Cora 48
+sunseeker-105  # Sunseeker 105
+aquila-48-ii  # Aquila 48 II
+lagoon-63  # Lagoon 63
+iliad-50  # Iliad 50
+sunseeker-63  # Sunseeker 63
+aquila-48  # Aquila 48
+sunseeker-70  # Sunseeker 70
+galeon-44  # Galeon 44
+super-yacht-128  # Super Yacht 128
+aquila-48-iii  # Aquila 48 III
+lucia-40  # Lucia 40
+motor-yacht-53  # Motor Yacht 53
+majesty-50  # Majesty 50
+galeon-45  # Galeon 45
+leopard-51  # Leopard 51
+azimut-55  # Azimut 55
+lagoon-62-ii  # Lagoon 62 II
+power-catamaran-54  # Power Catamaran 54
+lagoon-45  # Lagoon 45
+lagoon-45-ii  # Lagoon 45 II
+lagoon-45-iii  # Lagoon 45 III
+motor-yacht-65  # Motor Yacht 65
+motor-yacht-60  # Motor Yacht 60
+leopard-43  # Leopard 43
+aquila-48-iv  # Aquila 48 IV
+fountaine-pajot-46  # Fountaine Pajot 46
+leopard-47-ii  # Leopard 47 II
+megaway-45  # Megaway 45
+motor-yacht-57  # Motor Yacht 57
+horizon-54  # Horizon 54
+lagoon-40  # Lagoon 40
+power-catamaran-62  # Power Catamaran 62
+sealine-45  # Sealine 45
+sea-ray-50  # Sea Ray 50
+power-catamaran-40  # Power Catamaran 40
+princess-38  # Princess 38
+lagoon-44  # Lagoon 44
+leopard-47  # Leopard 47
+megaway-45-ii  # Megaway 45 II
+leopard-39  # Leopard 39
+clipper-45  # Clipper 45
+lagoon-38  # Lagoon 38
+lagoon-40-ii  # Lagoon 40 II
+lagoon-40-iii  # Lagoon 40 III
+motor-yacht-47  # Motor Yacht 47
+flybridge-cruiser-39  # Flybridge Cruiser 39
+chinese-junk-45  # Chinese Junk 45
+fortuna-45  # Fortuna 45
+lagoon-40-iv  # Lagoon 40 IV
+gulf-craft-53  # Gulf Craft 53
+motor-yacht-51  # Motor Yacht 51
+motor-yacht-39  # Motor Yacht 39
+cranchi-40  # Cranchi 40
+beneteau-oceanis-37  # Beneteau Oceanis 37
+motor-yacht-46  # Motor Yacht 46
+riviera-43  # Riviera 43
+motor-yacht-42  # Motor Yacht 42
+motor-yacht-34  # Motor Yacht 34
+riviera-38  # Riviera 38
+beneteau-32  # Beneteau 32
+grand-banks-42  # Grand Banks 42
+grand-banks-40  # Grand Banks 40
+wellcraft-34  # Wellcraft 34
+fishing-boat-27  # Fishing Boat 27
+grand-banks-46  # Grand Banks 46

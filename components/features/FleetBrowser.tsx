@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { Yacht } from "@/lib/data/yachts";
@@ -35,6 +35,17 @@ function sortYachts(list: Yacht[], sort: SortValue): Yacht[] {
 /** "ONE°15 Marina, Sentosa Cove, Singapore" -> "ONE°15 Marina" */
 function marinaOf(location: string): string {
   return location.split(",")[0].trim();
+}
+
+/** "Catamaran,Motor Yacht" -> Set{"Catamaran", "Motor Yacht"}, keeping only known values. */
+function parseMultiValue(param: string, known: string[]): Set<string> {
+  const knownSet = new Set(known);
+  return new Set(
+    param
+      .split(",")
+      .map((v) => v.trim())
+      .filter((v) => knownSet.has(v))
+  );
 }
 
 /** Plain grid of cards. Also the server-rendered fallback shown before the filters hydrate. */
@@ -82,6 +93,9 @@ const LABEL = "mr-2 text-[0.65rem] font-sans tracking-[0.14em] uppercase text-ch
  * Filter state lives in the URL (?type=&marina=&guests=&sort=), so the browser Back button and the
  * "Back to Fleet" link on a yacht page return to the same filtered view. Changes use replaceState,
  * so adjusting a filter does not add a history entry per click.
+ *
+ * Type and Marina are multi-select: ?type=Catamaran,Motor%20Yacht matches either. "All" clears the
+ * selection for that filter (an empty selection also means "no filter", same result either way).
  */
 export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   const searchParams = useSearchParams();
@@ -96,13 +110,13 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   );
   const maxGuests = useMemo(() => Math.max(1, ...yachts.map((y) => y.guests)), [yachts]);
 
-  // Read and validate state from the URL (unknown values fall back to "no filter").
+  // Read and validate state from the URL (unknown values are dropped silently).
   const typeParam = searchParams.get("type") ?? "";
   const marinaParam = searchParams.get("marina") ?? "";
   const sortParam = searchParams.get("sort") ?? "";
   const guestsParam = Number(searchParams.get("guests"));
-  const category = categories.includes(typeParam) ? typeParam : "All";
-  const marina = marinas.includes(marinaParam) ? marinaParam : "All";
+  const selectedCategories = useMemo(() => parseMultiValue(typeParam, categories), [typeParam, categories]);
+  const selectedMarinas = useMemo(() => parseMultiValue(marinaParam, marinas), [marinaParam, marinas]);
   const sort: SortValue = SORT_OPTIONS.some((o) => o.value === sortParam)
     ? (sortParam as SortValue)
     : "featured";
@@ -129,12 +143,45 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
     window.history.replaceState(null, "", qs ? `${window.location.pathname}?${qs}` : window.location.pathname);
   }
 
+  /** Toggles one value in a multi-select filter param (?type= / ?marina=). */
+  function toggleMulti(key: "type" | "marina", value: string, current: Set<string>) {
+    const next = new Set(current);
+    if (next.has(value)) next.delete(value);
+    else next.add(value);
+    update({ [key]: next.size === 0 ? null : Array.from(next).join(",") });
+  }
+
+  // The number input keeps its own draft text while focused, so a keystroke never gets fought by a
+  // re-render of the clamped/derived `guests` value (that fight was turning e.g. "15" into "55").
+  // The clamp + URL update only happens on blur / Enter; the slider still applies immediately.
+  const [guestsInput, setGuestsInput] = useState(String(guests));
+  const guestsInputFocused = useRef(false);
+  useEffect(() => {
+    if (!guestsInputFocused.current) setGuestsInput(String(guests));
+  }, [guests]);
+
+  function commitGuests(raw: string) {
+    if (raw.trim() === "") {
+      update({ guests: null });
+      setGuestsInput("1");
+      return;
+    }
+    const n = Math.round(Number(raw));
+    if (!Number.isFinite(n)) {
+      setGuestsInput(String(guests));
+      return;
+    }
+    const clamped = Math.min(Math.max(n, 1), maxGuests);
+    update({ guests: clamped <= 1 ? null : String(clamped) });
+    setGuestsInput(String(clamped));
+  }
+
   // "guests" is the size of your group: show yachts whose maximum capacity ("Up to N guests") is at least that.
   const visible = sortYachts(
     yachts.filter(
       (y) =>
-        (category === "All" || y.category === category) &&
-        (marina === "All" || marinaOf(y.location) === marina) &&
+        (selectedCategories.size === 0 || selectedCategories.has(y.category)) &&
+        (selectedMarinas.size === 0 || selectedMarinas.has(marinaOf(y.location))) &&
         y.guests >= guests
     ),
     sort
@@ -145,8 +192,15 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
       <div className="mb-10 flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className={LABEL}>Type</span>
-          {["All", ...categories].map((c) => (
-            <Chip key={c} active={category === c} onClick={() => update({ type: c === "All" ? null : c })}>
+          <Chip active={selectedCategories.size === 0} onClick={() => update({ type: null })}>
+            All
+          </Chip>
+          {categories.map((c) => (
+            <Chip
+              key={c}
+              active={selectedCategories.has(c)}
+              onClick={() => toggleMulti("type", c, selectedCategories)}
+            >
               {c}
             </Chip>
           ))}
@@ -155,8 +209,15 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
         {marinas.length > 1 && (
           <div className="flex flex-wrap items-center gap-2">
             <span className={LABEL}>Marina</span>
-            {["All", ...marinas].map((m) => (
-              <Chip key={m} active={marina === m} onClick={() => update({ marina: m === "All" ? null : m })}>
+            <Chip active={selectedMarinas.size === 0} onClick={() => update({ marina: null })}>
+              All
+            </Chip>
+            {marinas.map((m) => (
+              <Chip
+                key={m}
+                active={selectedMarinas.has(m)}
+                onClick={() => toggleMulti("marina", m, selectedMarinas)}
+              >
                 {m}
               </Chip>
             ))}
@@ -182,12 +243,17 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
             type="number"
             min={1}
             max={maxGuests}
-            value={guests}
-            onChange={(e) => {
-              const n = Math.round(Number(e.target.value));
-              if (!Number.isFinite(n)) return;
-              const clamped = Math.min(Math.max(n, 1), maxGuests);
-              update({ guests: clamped <= 1 ? null : String(clamped) });
+            value={guestsInput}
+            onFocus={() => {
+              guestsInputFocused.current = true;
+            }}
+            onChange={(e) => setGuestsInput(e.target.value)}
+            onBlur={(e) => {
+              guestsInputFocused.current = false;
+              commitGuests(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.currentTarget.blur();
             }}
             aria-label="Number of guests"
             className="w-16 border border-charcoal-200 bg-white px-2 py-1.5 text-center text-xs text-charcoal-600 focus:border-ocean-700 focus:outline-none"
