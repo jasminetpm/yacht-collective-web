@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Yacht } from "@/lib/data/yachts";
 import YachtCard from "@/components/features/YachtCard";
@@ -176,10 +177,22 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
     setGuestsInput(String(clamped));
   }
 
+  // Search box: same draft-text approach as the guests input, but applied live (replaceState, no history spam).
+  const qParam = searchParams.get("q") ?? "";
+  const [searchInput, setSearchInput] = useState(qParam);
+  const searchFocused = useRef(false);
+  useEffect(() => {
+    if (!searchFocused.current) setSearchInput(qParam);
+  }, [qParam]);
+  const terms = qParam.toLowerCase().split(/\s+/).filter(Boolean);
+
   // "guests" is the size of your group: show yachts whose maximum capacity ("Up to N guests") is at least that.
   const visible = sortYachts(
     yachts.filter(
       (y) =>
+        terms.every((t) =>
+          [y.name, y.tagline, y.category, y.location].some((f) => f.toLowerCase().includes(t))
+        ) &&
         (selectedCategories.size === 0 || selectedCategories.has(y.category)) &&
         (selectedMarinas.size === 0 || selectedMarinas.has(marinaOf(y.location))) &&
         y.guests >= guests
@@ -190,6 +203,27 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
   return (
     <div>
       <div className="mb-10 flex flex-col gap-5">
+        <div className="relative max-w-md">
+          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-400" />
+          <input
+            type="search"
+            value={searchInput}
+            onFocus={() => {
+              searchFocused.current = true;
+            }}
+            onBlur={() => {
+              searchFocused.current = false;
+            }}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              update({ q: e.target.value.trim() === "" ? null : e.target.value });
+            }}
+            placeholder="Search yachts by name, type or marina"
+            aria-label="Search yachts"
+            className="w-full border border-charcoal-200 bg-white py-2.5 pl-9 pr-3 text-xs text-charcoal-600 placeholder:text-charcoal-400 focus:border-ocean-700 focus:outline-none"
+          />
+        </div>
+
         <div className="flex flex-wrap items-center gap-2">
           <span className={LABEL}>Type</span>
           <Chip active={selectedCategories.size === 0} onClick={() => update({ type: null })}>
@@ -288,7 +322,7 @@ export default function FleetBrowser({ yachts }: { yachts: Yacht[] }) {
         <FleetGrid yachts={visible} />
       ) : (
         <p className="py-16 text-center text-sm text-charcoal-500">
-          No vessels match those filters. Try a smaller group size or a different type, or speak to our concierge.
+          No vessels match your search or filters. Try a smaller group size or a different type, or speak to our concierge.
         </p>
       )}
     </div>
