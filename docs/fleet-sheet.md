@@ -74,6 +74,8 @@ node scripts/fleet-images-column.mjs          # human-readable
 node scripts/fleet-images-column.mjs --csv    # id,images CSV
 ```
 
+**Compression.** Full steps: `docs/adding-yachts-and-photos.md`. Photos are served as-is (`images.unoptimized` in `next.config.ts`), so they must be pre-compressed to avoid slow pages and Vercel's Image Optimization limits. Run `python3 scripts/compress-images.py` (needs Pillow) after adding photos: it converts `.jpg/.jpeg/.png` under `public/images` to WebP, max 1920px wide, quality 82, then delete the originals and use the `.webp` paths. `fleet-images-column.mjs` prefers the `.webp` when both exist.
+
 Paste each yacht's list into the `images` column. Folders that end up empty show the gradient fallback. For deployment size, consider compressing or hosting kept photos on a CDN.
 
 ## Changing the Recommended order

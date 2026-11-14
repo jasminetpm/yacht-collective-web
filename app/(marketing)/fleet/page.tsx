@@ -20,7 +20,7 @@ export default async function FleetPage() {
       {/* ── Page Hero ── */}
       <section className="relative flex min-h-[55vh] items-end bg-ocean-700 overflow-hidden">
         <Image
-          src="/images/fleet/hero.jpg"
+          src="/images/fleet/hero.webp"
           alt="Private charter yachts moored in Singapore"
           fill
           loading="eager"

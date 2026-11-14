@@ -19,7 +19,7 @@ const CLIENTS: { name: string; logo: string | null }[] = [
   { name: "Olayan",             logo: "/images/logos/olayan.webp" },
   { name: "Charles & Keith",             logo: "/images/logos/charles&keith.svg" },
   { name: "Docusign",             logo:  "/images/logos/docusign.webp" },
-  { name: "Intralinks",             logo: "/images/logos/intralinks.png" },
+  { name: "Intralinks",             logo: "/images/logos/intralinks.webp" },
   { name: "d&b Audiotechnik",             logo: "/images/logos/d&b.svg" },
   { name: "PCF",          logo: "/images/logos/pcf.webp" },
   { name: "Alps",          logo: "/images/logos/alps.svg" },

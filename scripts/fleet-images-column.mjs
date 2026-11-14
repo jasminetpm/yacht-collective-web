@@ -26,7 +26,10 @@ const ids = readdirSync(root)
 if (asCsv) console.log("id,images");
 for (const id of ids) {
   const dir = join(root, id);
-  const files = existsSync(dir) ? readdirSync(dir).filter((f) => IMG.test(f)).sort() : [];
+  const all = existsSync(dir) ? readdirSync(dir).filter((f) => IMG.test(f)) : [];
+  // Prefer the compressed .webp when a same-named original (.jpg/.png) still sits beside it.
+  const stems = new Set(all.filter((f) => /\.webp$/i.test(f)).map((f) => f.replace(/\.webp$/i, "")));
+  const files = all.filter((f) => /\.webp$/i.test(f) || !stems.has(f.replace(/\.[^.]+$/, ""))).sort();
   const paths = files.map((f) => `/images/yachts/${id}/${f}`);
   if (asCsv) {
     console.log(`${id},"${paths.join("\n")}"`);

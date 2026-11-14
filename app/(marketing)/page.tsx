@@ -50,37 +50,37 @@ const EXPERIENCES = [
     name: "Sunset Cruises",
     description:
       "Watch the Singapore skyline turn gold from the water. The perfect private evening for two or twenty.",
-    image: "/images/occasions/sunset-cruise.jpg",
+    image: "/images/occasions/sunset-cruise.webp",
   },
   {
     name: "Corporate & Events",
     description:
       "Impress clients and reward teams with an exclusive charter that no boardroom can replicate.",
-    image: "/images/occasions/corporate.jpg",
+    image: "/images/occasions/corporate.webp",
   },
   {
     name: "Birthdays & Celebrations",
     description:
       "Milestone moments deserve extraordinary settings. We handle every detail so you simply enjoy.",
-    image: "/images/occasions/birthdays.jpg",
+    image: "/images/occasions/birthdays.webp",
   },
   {
     name: "Fishing Trips",
     description:
       "Cast off into Singapore's rich waters. A relaxed, rewarding day out for anglers of all levels.",
-    image: "/images/occasions/fishing.jpg",
+    image: "/images/occasions/fishing.webp",
   },
   {
     name: "Weddings & Proposals",
     description:
       "Say your vows or pop the question on the open water — with the Singapore skyline as your backdrop.",
-    image: "/images/occasions/proposal.jpg",
+    image: "/images/occasions/proposal.webp",
   },
   {
     name: "Photography & Film",
     description:
       "A stunning floating stage for content shoots, brand campaigns, and film productions.",
-    image: "/images/occasions/photography.jpg",
+    image: "/images/occasions/photography.webp",
   },
 ] as const;
 

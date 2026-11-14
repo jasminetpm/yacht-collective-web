@@ -85,7 +85,7 @@ export default function AboutPage() {
       {/* ── Hero ── */}
       <section className="relative flex min-h-[55vh] items-end bg-ocean-700 overflow-hidden">
         <Image
-          src="/images/about/hero.jpeg"
+          src="/images/about/hero.webp"
           alt="A Yacht Collective charter on Singapore's waters"
           fill
           loading="eager"
@@ -119,7 +119,7 @@ export default function AboutPage() {
             <div className="lg:sticky lg:top-28">
               <div className="relative h-96 w-full overflow-hidden bg-gradient-to-br from-ocean-800 to-ocean-600">
                 <Image
-                  src="/images/about/story.jpg"
+                  src="/images/about/story.webp"
                   alt="Yacht Collective — our story"
                   fill
                   className="object-cover"
@@ -273,7 +273,7 @@ export default function AboutPage() {
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-b from-ocean-800 to-ocean-600">
                 <Image
-                  src="/images/about/founder.jpg"
+                  src="/images/about/founder.webp"
                   alt="Jasmine Tan, Founder of Yacht Collective"
                   fill
                   className="object-cover"
